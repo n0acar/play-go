@@ -3,7 +3,7 @@ import AuthContext from "../../contexts/AuthContext";
 import axios from "axios";
 import Router from "next/router";
 
-const authorize = () => {
+const Authorize = () => {
   const [authItem, setAuthItem] = useContext(AuthContext);
 
   const authorize = () => {
@@ -27,4 +27,4 @@ const authorize = () => {
   );
 };
 
-export default authorize;
+export default Authorize;

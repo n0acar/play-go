@@ -7,7 +7,7 @@ import Router from "next/router";
 import axios from "axios";
 import AuthContext from "../../contexts/AuthContext";
 
-const callback: NextPage = () => {
+const Callback: NextPage = () => {
   const [authItem, setAuthItem] = useContext(AuthContext);
 
   useEffect(() => {
@@ -35,4 +35,4 @@ const callback: NextPage = () => {
   );
 };
 
-export default callback;
+export default Callback;

@@ -4,7 +4,7 @@ import PlayScreen from "../components/PlayScreen";
 import WebPlayback from "../components/WebPlayback";
 import AuthContext from "../contexts/AuthContext";
 
-const justplay: NextPage = () => {
+const Justplay: NextPage = () => {
   const [authItem, setAuthItem] = useContext(AuthContext);
   const [spotifyPlayer, setSpotifyPlayer] = useState<Spotify.Player | null>(
     null
@@ -21,4 +21,4 @@ const justplay: NextPage = () => {
   );
 };
 
-export default justplay;
+export default Justplay;
