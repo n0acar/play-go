@@ -13,12 +13,6 @@ const ControlButtons: React.FC<ControlButtonProps> = ({
   pause,
   next,
 }) => {
-  console.log({
-    isPlaying,
-    play,
-    pause,
-    next,
-  });
   return (
     <div>
       <div>

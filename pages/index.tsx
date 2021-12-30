@@ -9,7 +9,6 @@ const Home: NextPage = () => {
   const [authItem, setAuthItem] = useContext(AuthContext);
 
   const refreshAccessToken = () => {
-    console.log(authItem.refreshToken);
     const params = {
       refresh_token: authItem.refreshToken,
     };

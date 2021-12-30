@@ -7,7 +7,6 @@ const WebPlayback = ({ accessToken, setPlayer }) => {
   useEffect(() => {
     const handleLoadSuccess = (accessToken) => {
       console.log("Script loaded");
-      console.log(accessToken);
       const token = accessToken;
       const player = new window.Spotify.Player({
         name: "Just Play Web Player",
