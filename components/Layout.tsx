@@ -7,12 +7,11 @@ interface Props {
 
 const Layout: React.FC<Props> = ({ children }) => {
   return (
-    <div>
+    <div className="h-screen bg-gradient-to-r from-indigo-700 via-stone-900 to-blue-600 text-amber-500 font-display">
       <Meta />
-      <h1>Just Play</h1>
       <div>{children}</div>
     </div>
   );
 };
-
+//bg-gradient-to-r from-cyan-500 via-black to-blue-500
 export default Layout;

@@ -11,12 +11,12 @@ const Justplay: NextPage = () => {
   );
 
   return (
-    <div>
+    <div className="flex justify-center items-center text-center font-light">
+      {spotifyPlayer && <PlayScreen player={spotifyPlayer} />}
       <WebPlayback
         accessToken={authItem.accessToken}
         setPlayer={setSpotifyPlayer}
       />
-      {spotifyPlayer && <PlayScreen player={spotifyPlayer} />}
     </div>
   );
 };

@@ -14,19 +14,22 @@ const ControlButtons: React.FC<ControlButtonProps> = ({
   next,
 }) => {
   return (
-    <div>
+    <div className="flex flex-row text-6xl w-2/5 sm:w-1/5 justify-between">
       <div>
+        <BiPlayCircle className="text-transparent" />
+      </div>
+      <div className="active:text-amber-200">
         {!isPlaying ? (
           <BiPlayCircle onClick={play} />
         ) : (
           <BiPauseCircle onClick={pause} />
         )}
       </div>
-      <div>
+      <div className="active:text-amber-200">
         <BiSkipNext onClick={next} />
       </div>
     </div>
   );
 };
-
+//TODO w-full is spoit because of non wrapping text
 export default ControlButtons;

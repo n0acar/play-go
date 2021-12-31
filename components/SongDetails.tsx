@@ -13,10 +13,18 @@ const SongDetails: React.FC<SongDetailProps> = ({
   artist,
 }) => {
   return (
-    <div>
-      <Image src={albumCover} alt="Album Cover" width="100%" height="100%" />
-      <h2>{trackName}</h2>
-      <h4>{artist}</h4>
+    <div className="p-1">
+      <Image
+        className="rounded-md"
+        src={albumCover}
+        alt="Album Cover"
+        width="200%"
+        height="200%"
+      />
+      <div>
+        <p className="md:text-3xl text-xl">{trackName}</p>
+        <p className="md:text-lg text-md">{artist}</p>
+      </div>
     </div>
   );
 };
