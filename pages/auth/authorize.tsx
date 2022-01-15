@@ -12,14 +12,6 @@ const Authorize = () => {
       .then((response) => (window.location.href = response.data));
   };
 
-  useEffect(() => {
-    if (!authItem.isLoaded) return;
-    if (authItem.refreshToken === "") {
-      return;
-    }
-    Router.push("/");
-  }, [authItem]);
-
   return (
     <div>
       <button onClick={authorize}>AUTHORIZE</button>
