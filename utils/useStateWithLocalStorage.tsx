@@ -19,21 +19,29 @@ export const useStateWithLocalStorage = (localStorageKey: string) => {
 
 export const useObjectStateWithLocalStorage = <T,>(
   localStorageKey: string,
-  initialValue: T
+  initialValue: T,
+  isLoaded: boolean,
+  setLoaded: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   const [value, setValue] = useState<T>(initialValue);
 
   useEffect(() => {
+    console.log("use effect local storage log");
     const savedValue = localStorage.getItem(localStorageKey);
-    if (savedValue == null) return;
+    if (savedValue == null) {
+      setLoaded(true);
+      return;
+    }
     if (savedValue === "undefined") return;
     const item = JSON.parse(savedValue);
     setValue(item);
-    item.isLoaded = true;
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(localStorageKey, JSON.stringify(value));
+    if (isLoaded) {
+      localStorage.setItem(localStorageKey, JSON.stringify(value));
+    }
   }, [value]);
 
   return [value, setValue] as [T, React.Dispatch<React.SetStateAction<T>>];

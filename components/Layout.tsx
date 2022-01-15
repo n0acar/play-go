@@ -7,7 +7,7 @@ interface Props {
 
 const Layout: React.FC<Props> = ({ children }) => {
   return (
-    <div className="h-screen bg-gradient-to-r from-indigo-700 via-stone-900 to-blue-600 text-amber-500 font-display">
+    <div className="h-screen bg-gradient-to-tr from-cyan-400 via-blue-500 to-violet-500 text-amber-500 font-display">
       <Meta />
       <div>{children}</div>
     </div>

@@ -63,7 +63,7 @@ const PlayScreen: React.FC<Props> = ({ player }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center rounded-lg my-10 w-full h-screen sm:h-1/2">
+    <div className="flex flex-col justify-center items-center rounded-lg my-10 w-full sm:w-3/5 h-screen sm:h-1/2">
       <SongDetails
         albumCover={songDetail.albumCover}
         trackName={songDetail.trackName}
