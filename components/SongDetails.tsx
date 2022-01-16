@@ -22,7 +22,7 @@ const SongDetails: React.FC<SongDetailProps> = ({
         height="200%"
       />
       <div>
-        <p className="md:text-3xl text-xl">{trackName}</p>
+        <p className="md:text-3xl text-xl font-medium">{trackName}</p>
         <p className="md:text-lg text-md">{artist}</p>
       </div>
     </div>

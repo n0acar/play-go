@@ -68,6 +68,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (!isLoaded) return;
     if (authItem.refreshToken === "") {
+      Router.push("/auth/authorize");
       return;
     }
     if (!isStarted) {
