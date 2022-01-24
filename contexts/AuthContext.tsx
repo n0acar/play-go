@@ -1,5 +1,8 @@
 import React, { createContext, useEffect, useMemo, useState } from "react";
-import { useObjectStateWithLocalStorage } from "../utils/useStateWithLocalStorage";
+import {
+  useObjectStateWithLocalStorage,
+  useStateWithLocalStorage,
+} from "../utils/useStateWithLocalStorage";
 import axios from "axios";
 import Router from "next/router";
 
@@ -22,12 +25,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [isStarted, setStarted] = useState(false);
   const [isLoaded, setLoaded] = useState(false);
-  const [authItem, setAuthItem] = useObjectStateWithLocalStorage<AuthItem>(
-    "auth_item",
-    {
-      accessToken: "",
-      refreshToken: "",
-    },
+  const [authItem, setAuthItem] = useState<AuthItem>({
+    accessToken: "",
+    refreshToken: "",
+  });
+  const [refreshToken, setRefreshToken] = useStateWithLocalStorage(
+    "refresh_token",
     isLoaded,
     setLoaded
   );
@@ -45,14 +48,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const refreshAccessToken = (shouldRoute: boolean) => {
     const params = {
-      refresh_token: authItem.refreshToken,
+      refresh_token: refreshToken,
     };
     axios
       .get("/api/auth/refreshToken", { params })
       .then((response) => {
         setAuthItem({
-          ...authItem,
           accessToken: response.data.access_token,
+          refreshToken: refreshToken,
         });
         setStarted(true);
         if (shouldRoute) Router.push("/justplay");
@@ -67,14 +70,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     if (!isLoaded) return;
-    if (authItem.refreshToken === "") {
+    if (refreshToken === "") {
       Router.push("/auth/authorize");
       return;
     }
     if (!isStarted) {
+      console.log("efreess");
       refreshAccessToken(true);
     }
-  }, [isLoaded, authItem]);
+  }, [isLoaded, refreshToken]);
+
+  useEffect(() => {
+    if (!authItem) return;
+    if (authItem.refreshToken != "") setRefreshToken(authItem.refreshToken);
+  }, [authItem]);
 
   useEffect(() => {
     if (!isStarted) return;

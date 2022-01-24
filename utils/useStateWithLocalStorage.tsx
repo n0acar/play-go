@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
 
-export const useStateWithLocalStorage = (localStorageKey: string) => {
+export const useStateWithLocalStorage = (
+  localStorageKey: string,
+  isLoaded: boolean,
+  setLoaded: React.Dispatch<React.SetStateAction<boolean>>
+) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
     setValue(localStorage.getItem(localStorageKey) || "");
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(localStorageKey, value);
+    if (isLoaded) localStorage.setItem(localStorageKey, value);
   }, [value]);
 
   return [value, setValue] as [
