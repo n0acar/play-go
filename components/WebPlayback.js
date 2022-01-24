@@ -5,13 +5,16 @@ import axios from "axios";
 const WebPlayback = ({ accessToken, setPlayer }) => {
   useScript("https://sdk.scdn.co/spotify-player.js");
   useEffect(() => {
-    const handleLoadSuccess = (accessToken) => {
+    const getAccessToken = () => {
+      return accessToken;
+    };
+
+    const handleLoadSuccess = (getAccessToken) => {
       console.log("Script loaded");
-      const token = accessToken;
       const player = new window.Spotify.Player({
         name: "Just Play Web Player",
         getOAuthToken: (cb) => {
-          cb(token);
+          cb(getAccessToken());
         },
         volume: 1,
       });
@@ -68,7 +71,7 @@ const WebPlayback = ({ accessToken, setPlayer }) => {
     };
 
     window.onSpotifyWebPlaybackSDKReady = () => {
-      handleLoadSuccess(accessToken);
+      handleLoadSuccess(getAccessToken);
     };
   }, [accessToken]);
 

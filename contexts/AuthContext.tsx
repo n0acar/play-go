@@ -75,7 +75,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return;
     }
     if (!isStarted) {
-      console.log("efreess");
       refreshAccessToken(true);
     }
   }, [isLoaded, refreshToken]);
@@ -87,10 +86,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     if (!isStarted) return;
-    const refreshTimer = setInterval(
-      (refreshRetry) => refreshAccessToken(refreshRetry == 2),
-      15 * 60 * 1000
-    );
+    const refreshTimer = setInterval((refreshRetry) => {
+      refreshAccessToken(refreshRetry == 2);
+    }, 15 * 60 * 1000);
     return () => {
       clearInterval(refreshTimer);
     };
