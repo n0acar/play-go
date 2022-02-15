@@ -19,7 +19,7 @@ export default async function handler(
   const genre = req.query.genre as string;
 
   const topTracks = (await getTopItems(accessToken, "tracks")).data.items;
-  var topArtists = (await getTopItems(accessToken, "artists", 20)).data.items;
+  var topArtists = (await getTopItems(accessToken, "artists", 50)).data.items;
   topArtists = topArtists.sort(() => 0.5 - Math.random()).slice(0, 5);
   const referenceAudioFeatures = getAudioFeatures(
     accessToken,

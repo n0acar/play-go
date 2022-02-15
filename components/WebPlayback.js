@@ -38,7 +38,7 @@ const WebPlayback = ({ accessToken, setPlayer }) => {
 
       // Playback status updates
       player.addListener("player_state_changed", (state) => {
-        console.log(state);
+        //console.log(state);
       });
 
       // Ready
@@ -46,19 +46,19 @@ const WebPlayback = ({ accessToken, setPlayer }) => {
         console.log("Ready with Device ID", device_id);
         SpotifyApiService.transferPlayer(device_id, accessToken).then(
           (response) => {
-            axios
-              .get("api/similarity?genre=study", {
-                headers: { accessToken: accessToken },
-              })
-              .then((response) =>
-                response.data.tracks.map((track) =>
+            SpotifyApiService.recommendSongs(accessToken).then(
+              (recommendedSongs) => {
+                console.log("recommended");
+                console.log(recommendedSongs);
+                recommendedSongs.tracks.map((track) =>
                   SpotifyApiService.addToQueue(
                     accessToken,
                     track.uri,
                     device_id
                   )
-                )
-              );
+                );
+              }
+            );
             setPlayer(player);
           }
         );

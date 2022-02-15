@@ -19,6 +19,7 @@ const generateRandomAlphanumericString = (length: number) => {
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   var state = generateRandomAlphanumericString(16);
 
+  //TODO: auth all the time to see user change
   res.status(200).send(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
