@@ -3,7 +3,6 @@ import Head from "next/head";
 import React, { useEffect, useContext } from "react";
 import querystring, { ParsedQuery } from "query-string";
 import Router from "next/router";
-
 import axios from "axios";
 import AuthContext from "../../contexts/AuthContext";
 
