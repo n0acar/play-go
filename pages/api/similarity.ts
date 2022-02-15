@@ -19,15 +19,17 @@ export default async function handler(
   const genre = req.query.genre as string;
 
   const topTracks = (await getTopItems(accessToken, "tracks")).data.items;
+  var topArtists = (await getTopItems(accessToken, "artists")).data.items;
+  topArtists = topArtists.sort(() => 0.5 - Math.random()).slice(0, 5);
   const referenceAudioFeatures = getAudioFeatures(
     accessToken,
     topTracks.map((track: { id: string }) => track.id)
   ).then((response) => {
     const targetAudioFeatures = response.data.audio_features;
     const meanSong = buildAudioFeatureProfile(targetAudioFeatures);
-    const trackRecommendationsByGenre = getGenreRecommendations(
+    const trackRecommendationsByGenre = getArtistRecommendations(
       accessToken,
-      genre,
+      topArtists.map((artist: { id: string }) => artist.id),
       meanSong
     ).then((response) => res.json(response.data));
   });
