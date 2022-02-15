@@ -1,18 +1,6 @@
 import querystring from "query-string";
 import axios from "axios";
 
-export const getTopItems = (accessToken: string, type: string) => {
-  var url: string = `https://api.spotify.com/v1/me/top/${type}`;
-  var params = { limit: 4, time_range: "long_term" };
-  var headers: any = {
-    Authorization: `Bearer ${accessToken}`,
-    "Content-Type": "application/json",
-  };
-  return axios.get(querystring.stringifyUrl({ url: url, query: params }), {
-    headers: headers,
-  });
-};
-
 export const getRecommendations = (
   accessToken: string,
   seedItems: {
@@ -91,4 +79,16 @@ export const addToQueue = (
     })
     .then(() => console.log(`${uri} uri added`))
     .catch((error) => console.error("NOT ADDED"));
+};
+
+export const getAudioFeatures = (accessToken: string, trackIds: []) => {
+  var url: string = `https://api.spotify.com/v1/audio-features`;
+  var params = { ids: trackIds.join(",") };
+  var headers: any = {
+    Authorization: `Bearer ${accessToken}`,
+    "Content-Type": "application/json",
+  };
+  return axios.get(querystring.stringifyUrl({ url: url, query: params }), {
+    headers: headers,
+  });
 };
