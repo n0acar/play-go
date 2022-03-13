@@ -13,8 +13,13 @@ const Authorize = () => {
   };
 
   return (
-    <div>
-      <button onClick={authorize}>AUTHORIZE</button>
+    <div className="text-center min-h-screen flex items-center justify-center">
+      <button
+        className="outline outline-offset-4 bg-teal-100 rounded-2xl h-12 w-32 text-zinc-900 outline-teal-100 text-bold"
+        onClick={authorize}
+      >
+        AUTHORIZE
+      </button>
     </div>
   );
 };

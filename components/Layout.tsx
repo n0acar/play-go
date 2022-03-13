@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import Meta from "./Meta";
 
 interface Props {
@@ -7,11 +8,14 @@ interface Props {
 
 const Layout: React.FC<Props> = ({ children }) => {
   return (
-    <div className="h-screen bg-gradient-to-tr from-cyan-400 via-blue-500 to-violet-500 text-amber-500 font-display">
+    <div className="min-h-screen font-body font-extrabold bg-gradient-to-tr from-zinc-800 via-zinc-900 to-zinc-800 text-zinc-100">
       <Meta />
+      <div>
+        <Toaster />
+      </div>
       <div>{children}</div>
     </div>
   );
 };
-//bg-gradient-to-r from-cyan-500 via-black to-blue-500
+//bg-gradient-to-r from-cyan-500 via-black to-blue-500 text-[#37963]
 export default Layout;

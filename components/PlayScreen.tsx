@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import ControlButtons, { ControlButtonProps } from "./ControlButtons";
 import SongDetails, { SongDetailProps } from "./SongDetails";
 
@@ -60,21 +61,15 @@ const PlayScreen: React.FC<Props> = ({ player }) => {
     next: () => {
       player.nextTrack();
     },
+    addToPlaylist: () => {
+      toast.success("Success baby");
+    },
   };
 
   return (
     <div className="flex flex-col justify-center items-center rounded-lg my-10 w-full sm:w-3/5 h-screen sm:h-1/2">
-      <SongDetails
-        albumCover={songDetail.albumCover}
-        trackName={songDetail.trackName}
-        artist={songDetail.artist}
-      />
-      <ControlButtons
-        isPlaying={controlButtons.isPlaying}
-        play={controlButtons.play}
-        pause={controlButtons.pause}
-        next={controlButtons.next}
-      />
+      <SongDetails {...songDetail} />
+      <ControlButtons {...controlButtons} />
     </div>
   );
 };
