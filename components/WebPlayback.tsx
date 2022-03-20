@@ -1,16 +1,21 @@
-import useScript from "../utils/useScript.ts";
+import useScript from "../utils/useScript";
 import { useEffect } from "react";
 import * as SpotifyApiService from "../utils/spotifyApiService";
 import axios from "axios";
+import SpotifyWebApi from "spotify-web-api-js";
 
-const WebPlayback = ({ accessToken, setPlayer }) => {
+const WebPlayback: React.FC<{
+  accessToken: string;
+  setPlayer: React.Dispatch<React.SetStateAction<Spotify.Player | undefined>>;
+  spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
+}> = ({ accessToken, setPlayer, spotifyWebApi }) => {
   useScript("https://sdk.scdn.co/spotify-player.js");
   useEffect(() => {
     const getAccessToken = () => {
       return accessToken;
     };
 
-    const handleLoadSuccess = (getAccessToken) => {
+    const handleLoadSuccess = (getAccessToken: { (): string; (): string }) => {
       console.log("Script loaded");
       const player = new window.Spotify.Player({
         name: "Just Play Web Player",
@@ -44,30 +49,23 @@ const WebPlayback = ({ accessToken, setPlayer }) => {
       // Ready
       player.addListener("ready", ({ device_id }) => {
         console.log("Ready with Device ID", device_id);
-        SpotifyApiService.transferPlayer(device_id, accessToken).then(
-          (response) => {
-            SpotifyApiService.recommendSongs(accessToken).then(
-              (recommendedSongs) => {
-                console.log("recommended");
-                console.log(recommendedSongs);
-                recommendedSongs.tracks.map((track) =>
-                  SpotifyApiService.addToQueue(
-                    accessToken,
-                    track.uri,
-                    device_id
-                  )
-                );
-              }
+        spotifyWebApi
+          .transferMyPlayback([device_id])
+          .then(() => {
+            return SpotifyApiService.recommendSongs(accessToken);
+          })
+          .then((recommendedSongs) => {
+            recommendedSongs.tracks.map((track: any) =>
+              SpotifyApiService.addToQueue(accessToken, track.uri, device_id)
             );
-            setPlayer(player);
-          }
-        );
+          });
+        setPlayer(player);
       });
 
       // Not Ready
       player.addListener("not_ready", ({ device_id }) => {
         console.log("Device ID has gone offline", device_id);
-        setPlayer(null);
+        setPlayer(undefined);
       });
 
       // Connect to the player!

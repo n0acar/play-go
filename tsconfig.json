@@ -19,7 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "components/WebPlayback.js"
+    "components/WebPlayback.tsxx"
   ],
   "exclude": ["node_modules"]
 }

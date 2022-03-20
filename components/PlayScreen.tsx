@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import SpotifyWebApi from "spotify-web-api-js";
 import ControlButtons, { ControlButtonProps } from "./ControlButtons";
 import SongDetails, { SongDetailProps } from "./SongDetails";
 
 interface Props {
+  spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
   player: Spotify.Player;
 }
 
-const PlayScreen: React.FC<Props> = ({ player }) => {
+const PlayScreen: React.FC<Props> = ({ spotifyWebApi, player }) => {
   const songDetails: SongDetailProps = {
-    albumCover:
-      "https://i.scdn.co/image/ab67616d00001e021ae967e4a02c7a39eb3c189b",
-    trackName: "Sundress",
-    artist: "A$AP Rocky",
+    albumCover: "/logo_white.png",
+    trackName: "Just Play",
+    artist: "Just Play Presents",
+    uri: "",
   };
 
   const [playerState, setPlayerState] = useState<Spotify.PlaybackState | null>(
@@ -47,6 +49,7 @@ const PlayScreen: React.FC<Props> = ({ player }) => {
       albumCover: currentTrack.album.images[0].url,
       trackName: currentTrack.name,
       artist: currentTrack.artists.flatMap((artist) => artist.name).join(", "),
+      uri: currentTrack.uri.substring(14), //spotify:track
     });
   }, [playerState]);
 
@@ -62,12 +65,19 @@ const PlayScreen: React.FC<Props> = ({ player }) => {
       player.nextTrack();
     },
     addToPlaylist: () => {
-      toast.success("Success baby");
+      if (songDetail.uri.length > 0) {
+        spotifyWebApi
+          .addToMySavedTracks([songDetail.uri])
+          .then(() => toast.success(`Added to the Liked Songs.`))
+          .catch(() => toast.error("Unexpected Error"));
+      } else {
+        toast.error("Unexpected Error");
+      }
     },
   };
 
   return (
-    <div className="flex flex-col justify-center items-center rounded-lg my-10 w-full sm:w-3/5 h-screen sm:h-1/2">
+    <div className="flex flex-col justify-center items-center rounded-lg w-full sm:w-3/5 h-screen sm:h-1/2">
       <SongDetails {...songDetail} />
       <ControlButtons {...controlButtons} />
     </div>

@@ -1,22 +1,25 @@
 import { NextPage } from "next";
 import React, { useContext, useState } from "react";
 import PlayScreen from "../components/PlayScreen";
+import useSpotifyWebApi from "../components/SpotifyWebApi";
 import WebPlayback from "../components/WebPlayback";
 import AuthContext from "../contexts/AuthContext";
 
 const Justplay: NextPage = () => {
-  const [authItem, setAuthItem] = useContext(AuthContext);
-  const [spotifyPlayer, setSpotifyPlayer] = useState<Spotify.Player | null>(
-    null
-  );
+  const [{ accessToken }, _] = useContext(AuthContext);
+  const [player, setPlayer] = useState<Spotify.Player>();
+  const spotifyWebApi = useSpotifyWebApi();
 
   return (
     <div className="flex justify-center items-center text-center font-light">
-      {spotifyPlayer && <PlayScreen player={spotifyPlayer} />}
-      {authItem.accessToken && (
+      {player && spotifyWebApi && (
+        <PlayScreen spotifyWebApi={spotifyWebApi} player={player} />
+      )}
+      {accessToken && spotifyWebApi && (
         <WebPlayback
-          accessToken={authItem.accessToken}
-          setPlayer={setSpotifyPlayer}
+          accessToken={accessToken}
+          setPlayer={setPlayer}
+          spotifyWebApi={spotifyWebApi}
         />
       )}
     </div>

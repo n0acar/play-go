@@ -63,7 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       })
       .catch((error) => {
         console.error(error);
-        if (shouldRoute) Router.push("/auth/authorize");
+        if (shouldRoute) Router.push("/");
         else setRefreshRetry(refreshRetry + 1);
       });
   };
@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (!isLoaded) return;
     if (refreshToken === "") {
-      Router.push("/auth/authorize");
+      Router.push("/");
       return;
     }
     if (!isStarted) {

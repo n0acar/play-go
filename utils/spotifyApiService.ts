@@ -1,18 +1,6 @@
 import querystring from "query-string";
 import axios from "axios";
 
-export const transferPlayer = (deviceId: string, accessToken: string) => {
-  const url = "https://api.spotify.com/v1/me/player";
-  const form = { device_ids: [deviceId] };
-  const headers = {
-    Authorization: `Bearer ${accessToken}`,
-    "Content-Type": "application/json",
-  };
-  return axios.put(url, JSON.stringify(form), {
-    headers: headers,
-  });
-};
-
 export const skipToNextTrack = (accessToken: string, deviceId: string) => {
   const url = "https://api.spotify.com/v1/me/player/next";
   const params = { device_id: deviceId };

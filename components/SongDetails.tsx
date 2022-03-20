@@ -5,6 +5,7 @@ export interface SongDetailProps {
   albumCover: string;
   trackName: string;
   artist: string;
+  uri: string;
 }
 
 const SongDetails: React.FC<SongDetailProps> = ({
