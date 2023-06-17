@@ -22,7 +22,7 @@ export const useStateWithLocalStorage = (
   ];
 };
 
-export const useObjectStateWithLocalStorage = <T,>(
+export const useObjectStateWithLocalStorage = <T>(
   localStorageKey: string,
   initialValue: T,
   isLoaded: boolean,
@@ -31,7 +31,6 @@ export const useObjectStateWithLocalStorage = <T,>(
   const [value, setValue] = useState<T>(initialValue);
 
   useEffect(() => {
-    console.log("use effect local storage log");
     const savedValue = localStorage.getItem(localStorageKey);
     if (savedValue == null) {
       setLoaded(true);

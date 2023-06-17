@@ -30,7 +30,6 @@ const PlayScreen: React.FC<Props> = ({ spotifyWebApi, player }) => {
 
     // Playback status updates
     player.addListener("player_state_changed", (state) => {
-      console.log("playerStateChanged");
       if (!state) {
         console.error("User is not playing music through the Web Playback SDK");
         return;
@@ -68,7 +67,7 @@ const PlayScreen: React.FC<Props> = ({ spotifyWebApi, player }) => {
       if (songDetail.uri.length > 0) {
         spotifyWebApi
           .addToMySavedTracks([songDetail.uri])
-          .then(() => toast.success(`Added to the Liked Songs.`))
+          .then(() => toast.success(`Added to Liked Songs.`))
           .catch(() => toast.error("Unexpected Error"));
       } else {
         toast.error("Unexpected Error");

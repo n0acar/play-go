@@ -1,14 +1,13 @@
 import useScript from "../utils/useScript";
 import { useEffect } from "react";
-import * as SpotifyApiService from "../utils/spotifyApiService";
-import axios from "axios";
 import SpotifyWebApi from "spotify-web-api-js";
 
 const WebPlayback: React.FC<{
   accessToken: string;
   setPlayer: React.Dispatch<React.SetStateAction<Spotify.Player | undefined>>;
   spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
-}> = ({ accessToken, setPlayer, spotifyWebApi }) => {
+  seedArtists: Spotify.Artist[];
+}> = ({ accessToken, setPlayer, spotifyWebApi, seedArtists }) => {
   useScript("https://sdk.scdn.co/spotify-player.js");
   useEffect(() => {
     const getAccessToken = () => {
@@ -24,7 +23,6 @@ const WebPlayback: React.FC<{
         },
         volume: 1,
       });
-      console.log(player);
 
       // Error handling
       player.addListener("initialization_error", ({ message }) => {
@@ -42,9 +40,7 @@ const WebPlayback: React.FC<{
       });
 
       // Playback status updates
-      player.addListener("player_state_changed", (state) => {
-        //console.log(state);
-      });
+      player.addListener("player_state_changed", (state) => {});
 
       // Ready
       player.addListener("ready", ({ device_id }) => {
@@ -52,13 +48,17 @@ const WebPlayback: React.FC<{
         spotifyWebApi
           .transferMyPlayback([device_id])
           .then(() => {
-            return SpotifyApiService.recommendSongs(accessToken);
+            console.log(seedArtists);
+            return spotifyWebApi.getRecommendations({
+              seed_artists: seedArtists.map((artist) => artist.id),
+            });
           })
-          .then((recommendedSongs) => {
-            recommendedSongs.tracks.map((track: any) =>
-              SpotifyApiService.addToQueue(accessToken, track.uri, device_id)
-            );
-          });
+          .then(async (recommendedSongs) => {
+            for (let track of recommendedSongs.tracks) {
+              await spotifyWebApi.queue(track.uri, { device_id: device_id });
+            }
+          })
+          .then(() => spotifyWebApi.skipToNext({ device_id: device_id }));
         setPlayer(player);
       });
 
