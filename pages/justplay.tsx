@@ -9,7 +9,9 @@ import ArtistPickerScreen from "../components/ArtistPickerScreen";
 const Justplay: NextPage = () => {
   const [{ accessToken }, _] = useContext(AuthContext);
   const [player, setPlayer] = useState<Spotify.Player>();
-  const [seedArtists, setSeedArtists] = useState<Spotify.Artist[]>([]);
+  const [seedArtists, setSeedArtists] = useState<SpotifyApi.ArtistObjectFull[]>(
+    []
+  );
   const spotifyWebApi = useSpotifyWebApi();
 
   if (!!!spotifyWebApi) {

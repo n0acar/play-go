@@ -7,7 +7,7 @@ import { BiCheckCircle } from "react-icons/bi";
 
 interface Props {
   spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
-  setSeedArtists: Dispatch<SetStateAction<Spotify.Artist[]>>;
+  setSeedArtists: Dispatch<SetStateAction<SpotifyApi.ArtistObjectFull[]>>;
 }
 
 const ArtistPickerScreen: React.FC<Props> = ({
@@ -62,7 +62,7 @@ const ArtistPickerScreen: React.FC<Props> = ({
       <div className="overflow-y-scroll md:max-h-96">
         <ul className="grid grid-cols-4 gap-4">
           {favoriteArtists.map((artist) => (
-            <li>
+            <li key={artist.id}>
               <button
                 className="relative group rounded-md"
                 onClick={(e) => handleSelection(artist)}

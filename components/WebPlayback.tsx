@@ -6,7 +6,7 @@ const WebPlayback: React.FC<{
   accessToken: string;
   setPlayer: React.Dispatch<React.SetStateAction<Spotify.Player | undefined>>;
   spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
-  seedArtists: Spotify.Artist[];
+  seedArtists: SpotifyApi.ArtistObjectFull[];
 }> = ({ accessToken, setPlayer, spotifyWebApi, seedArtists }) => {
   useScript("https://sdk.scdn.co/spotify-player.js");
   useEffect(() => {
