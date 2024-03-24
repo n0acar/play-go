@@ -113,7 +113,7 @@ const ArtistPickerScreen: React.FC<Props> = ({
       <>
         <button
           className="shadow-md flex justify-center font-bold h-full w-full text-zinc-100 bg-zinc-900 hover:bg-zinc-800 hover:text-lime-500"
-          onClick={() => window.modal.showModal()}
+          onClick={() => (window as any).modal.showModal()}
         >
           <BiSearch className="h-full text-6xl" />
         </button>
