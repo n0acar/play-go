@@ -54,11 +54,18 @@ const WebPlayback: React.FC<{
             });
           })
           .then(async (recommendedSongs) => {
-            for (let track of recommendedSongs.tracks) {
-              await spotifyWebApi.queue(track.uri, { device_id: device_id });
+            for (let i = 0; i < recommendedSongs.tracks.length; i++) {
+              let track = recommendedSongs.tracks[i];
+              if (
+                track.artists
+                  .map(({ id }) => id)
+                  .some((id) => seedArtists.map(({ id }) => id).includes(id))
+              ) {
+                await spotifyWebApi.queue(track.uri, { device_id: device_id });
+              }
+              if (i === 0) spotifyWebApi.skipToNext({ device_id: device_id });
             }
-          })
-          .then(() => spotifyWebApi.skipToNext({ device_id: device_id }));
+          });
         setPlayer(player);
       });
 
