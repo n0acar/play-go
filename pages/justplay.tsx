@@ -5,6 +5,7 @@ import useSpotifyWebApi from "../components/SpotifyWebApi";
 import WebPlayback from "../components/WebPlayback";
 import AuthContext from "../contexts/AuthContext";
 import ArtistPickerScreen from "../components/ArtistPickerScreen";
+import RecommendedPlaylist from "../components/RecommendedPlaylist";
 
 const Justplay: NextPage = () => {
   const [{ accessToken }, _] = useContext(AuthContext);
@@ -26,6 +27,10 @@ const Justplay: NextPage = () => {
           setSeedArtists={setSeedArtists}
         />
       ) : (
+        // <RecommendedPlaylist
+        //   spotifyWebApi={spotifyWebApi}
+        //   seedArtists={seedArtists}
+        // />
         <>
           {player && (
             <PlayScreen spotifyWebApi={spotifyWebApi} player={player} />

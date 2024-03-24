@@ -1,9 +1,8 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
 import Image from "next/image";
-import { BsBookmarkCheckFill } from "react-icons/bs";
-import { useToggle } from "usehooks-ts";
-import { BiCheckCircle } from "react-icons/bi";
+import { BiCheckCircle, BiSearch } from "react-icons/bi";
+import ArtistSearch from "./ArtistSearch";
 
 interface Props {
   spotifyWebApi: SpotifyWebApi.SpotifyWebApiJs;
@@ -28,7 +27,7 @@ const ArtistPickerScreen: React.FC<Props> = ({
   useEffect(() => {
     if (favoriteArtists.length === 0) {
       spotifyWebApi
-        .getMyTopArtists()
+        .getMyTopArtists({ limit: 23 })
         .then((artists) => setFavoriteArtists(artists.items));
     }
   }, [favoriteArtists]);
@@ -41,6 +40,20 @@ const ArtistPickerScreen: React.FC<Props> = ({
       setSelectedArtists(
         selectedArtists.filter((artist) => clicked !== artist)
       );
+    }
+  };
+
+  const handleSearch: (searched: SpotifyApi.ArtistObjectFull) => void = (
+    searched
+  ) => {
+    const existingArtist = favoriteArtists.find(
+      (favorite) => favorite.id === searched.id
+    );
+    if (existingArtist) {
+      handleSelection(existingArtist);
+    } else {
+      setFavoriteArtists([searched, ...favoriteArtists]);
+      handleSelection(searched);
     }
   };
 
@@ -61,32 +74,63 @@ const ArtistPickerScreen: React.FC<Props> = ({
       </div>
       <div className="overflow-y-scroll md:max-h-96">
         <ul className="grid grid-cols-4 gap-4">
+          <li key="artist-search">{SearchCard(handleSearch)}</li>
           {favoriteArtists.map((artist) => (
-            <li key={artist.id}>
-              <button
-                className="relative group rounded-md"
-                onClick={(e) => handleSelection(artist)}
-              >
-                <Image
-                  className="absolute inset-0 rounded-md shadow-md hover:blur-[1px] text-zinc-900 group-hover:opacity-10 group-active:opacity-20"
-                  src={artist.images[0].url}
-                  alt="Album Cover"
-                  width="150%"
-                  height="150%"
-                />
-                <span className="absolute inset-0 flex justify-center items-center group-hover:visible invisible text-zinc-100 text-2xl overflow-hidden break-words">
-                  {artist.name}
-                </span>
-                {selectedArtists.includes(artist) && (
-                  <BiCheckCircle className="absolute inset-0 text-2xl m-2 text-lime-500 bg-zinc-900 rounded-full" />
-                )}
-              </button>
-            </li>
+            <li key={artist.id}>{ArtistCard(artist)}</li>
           ))}
         </ul>
       </div>
     </div>
   );
+
+  function ArtistCard(artist: SpotifyApi.ArtistObjectFull) {
+    return (
+      <button
+        className="relative group"
+        onClick={(e) => handleSelection(artist)}
+      >
+        <Image
+          className="absolute inset-0 shadow-md hover:blur-[1px] text-zinc-900 group-hover:opacity-10 group-active:opacity-20"
+          src={artist.images[0].url}
+          alt="Album Cover"
+          width="150%"
+          height="150%"
+        />
+        <span className="absolute inset-0 flex justify-center items-center group-hover:visible invisible text-zinc-100 text-2xl overflow-hidden break-words">
+          {artist.name}
+        </span>
+        {selectedArtists.includes(artist) && (
+          <BiCheckCircle className="absolute inset-0 text-2xl m-2 text-lime-500 bg-zinc-900 rounded-full" />
+        )}
+      </button>
+    );
+  }
+
+  function SearchCard(
+    handleSearch: (artist: SpotifyApi.ArtistObjectFull) => void
+  ) {
+    return (
+      <>
+        <button
+          className="shadow-md flex justify-center font-bold h-full w-full text-zinc-100 bg-zinc-900 hover:bg-zinc-800 hover:text-lime-500"
+          onClick={() => window.modal.showModal()}
+        >
+          <BiSearch className="h-full text-6xl" />
+        </button>
+        <dialog id="modal" className="modal modal-bottom sm:modal-middle">
+          <form method="dialog" className="modal-box h-64">
+            <ArtistSearch
+              handleSearch={handleSearch}
+              spotifyWebApi={spotifyWebApi}
+            />
+          </form>
+          <form method="dialog" className="modal-backdrop">
+            <button>close</button>
+          </form>
+        </dialog>
+      </>
+    );
+  }
 };
 
 export default ArtistPickerScreen;
