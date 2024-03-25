@@ -51,22 +51,25 @@ const WebPlayback: React.FC<{
             console.log(seedArtists);
             return spotifyWebApi.getRecommendations({
               seed_artists: seedArtists.map((artist) => artist.id),
+              limit: 100,
             });
           })
           .then(async (recommendedSongs) => {
-            for (let i = 0; i < recommendedSongs.tracks.length; i++) {
-              let track = recommendedSongs.tracks[i];
+            let count = 0;
+            for (let track of recommendedSongs.tracks) {
               if (
                 track.artists
                   .map(({ id }) => id)
                   .some((id) => seedArtists.map(({ id }) => id).includes(id))
               ) {
                 await spotifyWebApi.queue(track.uri, { device_id: device_id });
+                if (count++ === 0) {
+                  spotifyWebApi.skipToNext({ device_id: device_id });
+                  setPlayer(player);
+                }
               }
-              if (i === 0) spotifyWebApi.skipToNext({ device_id: device_id });
             }
           });
-        setPlayer(player);
       });
 
       // Not Ready
